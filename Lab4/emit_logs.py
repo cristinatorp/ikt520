@@ -11,7 +11,7 @@ channel.exchange_declare(exchange="direct_logs", exchange_type="direct")
 logs = []
 codes = set()
 
-with open("./Lab4/access.log") as file:
+with open("./Lab4/input/access.log") as file:
     for line in file.readlines():
         logs.append(line.strip())
 

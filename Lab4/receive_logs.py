@@ -1,5 +1,6 @@
 import pika
 import sys
+import re
 
 # Run RabbitMQ:
 # docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
@@ -52,11 +53,20 @@ def callback(ch, method, properties, body):
 
     message = body.decode().split(" ")
     ip, date, time, request, url = message[0], message[3][1:12], message[3][13:], message[5], message[6]
-    # Print date - status code - IP address - url - HTTP method
-    print(f"[{date} {time}] "
-          f"{code_color}[{code}: {status_codes[code].upper()}]"
-          f"{colors.ENDC} Source IP: {colors.HEADER}{colors.BOLD}{ip}{colors.ENDC} | "
-          f"Tried to access {colors.OKBLUE}\"{url}\"{colors.ENDC} ({request[1:]})")
+
+    # [date & time] [status code & message] source IP | url & HTTP method
+    formatted_output = f"[{date} {time}] " \
+                       f"{code_color}[{code}: {status_codes[code].upper()}]" \
+                       f"{colors.ENDC} Source IP: {colors.HEADER}{colors.BOLD}{ip}{colors.ENDC} | " \
+                       f"Tried to access {colors.OKBLUE}\"{url}\"{colors.ENDC} ({request[1:]})"
+
+    # Print to terminal with colors
+    print(formatted_output)
+
+    # Write to file without colors
+    ansi_re = re.compile(r'\x1b\[[0-9;]*m')
+    with open("./Lab4/output/formatted_output_404.log", "a") as file:
+        file.write(re.sub(ansi_re, "", formatted_output) + "\n")
 
 
 channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)

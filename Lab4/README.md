@@ -18,7 +18,9 @@
 * Create a new queue for each status code in `user_input`
 * For each **callback**:
   * Print the formatted logs to the terminal (with ASCI escape sequences for color outputs)
-  * Write the formatted logs to "formatted_output.log" (without ASCI)
+  * Write the formatted logs to the file "formatted_output.log" (without ASCI)
+
+### Terminal output examples
 
 ![output log without user arguments](https://i.imgur.com/GK2TqI8.png)
 *Outtake of a few printed log lines without user arguments (all status codes)*

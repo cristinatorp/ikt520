@@ -27,3 +27,12 @@
 
 ![output log with argument "404"](https://i.imgur.com/VSgzbIM.png)
 *Outtake of a few printed log lines with one user argument: **404***
+
+--- 
+### Take a look at the 4 different exchange types, and try out them out here and find out which one is best for this lab, and give statement for why you would not use the other ones you didn't use.
+* **Fanout** - sends the emitted logs to every queue, disregarding the need for a routing key. We do not want this as we want to differentiate between different logs.
+* **Direct** - uses a single string as a routing key. Useful in this scenario, but if you need to specify further (for example nested categories) then you should use topic instead.
+* **Topic** - can use several strings as routing keys. As mentioned, this is useful if you need to specify by several categories. This exchange could also be used in this assignment, for example by tagging logs as malicious/non-malicious as well as the individual status code ("malicious.404", "non-malicious.200"). The receiver could then differentiate between the more general category "(non-)malicious" as well as the specific ones ("404").
+* **Header** - close to topic (can use several categories), but uses *"message headers"*, not routing keys. These are not sent sequentially, which is why we don't use it in this assignment.
+
+Choosing direct or topic in this assignment depends on what you want - both would satisfy the criteria. We chose a direct exchange because we wanted to focus on the individual status codes.
